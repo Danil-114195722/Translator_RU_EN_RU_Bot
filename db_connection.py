@@ -2,6 +2,8 @@ import sqlite3
 from sqlite3 import Connection, Error
 from time import localtime
 
+from constants import *
+
 
 DATABASE = '/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/sqlite.db'
 CONNECTION = sqlite3.connect(DATABASE)
@@ -58,7 +60,7 @@ def show_all(table):
 def select_word_translation(word, from_language):
     query = f'''
         select * from {from_language}
-        WHERE word='{word}';'''
+        WHERE word="{word}";'''
 
     try:
         return tuple(execute_query(CONNECTION, query))[0]
@@ -66,11 +68,16 @@ def select_word_translation(word, from_language):
         return None
 
 
-# добавить перевод "translation" слова "word" из языка "from_language"
-def add_word_translation(word, translation, from_language):
-    query = f'''
-        INSERT OR IGNORE INTO {from_language} (word, translation)
-        VALUES ('{word}', '{translation}')'''
+# добавить перевод "translation" слова "word" из языка "from_language" (если язык 'english', то ещё добавляем transcription)
+def add_word_translation(word, translation, transcription, from_language):
+    if from_language == RU:
+        query = f'''
+            INSERT OR IGNORE INTO {from_language} (word, translation)
+            VALUES ('{word}', '{translation}')'''
+    else:
+        query = f'''
+            INSERT OR IGNORE INTO {from_language} (word, translation, transcription)
+            VALUES ("{word}", "{translation}", "{transcription}")'''
 
     execute_query(CONNECTION, query)
 

@@ -47,7 +47,7 @@ def get_translation(word):
         try:
             translation_ru = soup.find('p', {'class': 't_inline'}).get_text()
             # добавляем перевод в бд
-            add_word_translation(word, translation_ru, RU)
+            add_word_translation(word, translation_ru, None, RU)
 
             # возвращаем полученный перевод
             return translation_ru
@@ -58,17 +58,19 @@ def get_translation(word):
     else:
         try:
             translation_en = soup.find('div', {'class': 't_inline_en'}).get_text()
-            # добавляем перевод в бд
-            add_word_translation(word, translation_en, EN)
+            transcription_en = soup.find('div', {'id': 'uk_tr_sound'}).find('span', {'class': 'transcription'}).get_text().strip()
+
+            # добавляем перевод и транскрипцию в бд
+            add_word_translation(word, translation_en, transcription_en, EN)
 
             # возвращаем полученный перевод
-            return translation_en
+            return ' '.join((transcription_en, translation_en))
         except AttributeError:
             return error_not_exist_word
 
-# if __name__ == '__main__':
-#     word = input()
-#     word = word.lower()
-#
-#     tr = get_translation(word)
-#     print(tr)
+if __name__ == '__main__':
+    word = input('Enter a word: ')
+    word = word.lower()
+
+    tr = get_translation(word)
+    print(tr)
