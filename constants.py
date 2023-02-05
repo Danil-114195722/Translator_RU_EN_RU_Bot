@@ -1,7 +1,7 @@
 import sqlite3
 
 
-DATABASE = '/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/sqlite.db'
+DATABASE = './sqlite.db'
 CONNECTION = sqlite3.connect(DATABASE)
 DEFAULT_PAGE = 'https://wooordhunt.ru/word/'
 RU = 'russian'

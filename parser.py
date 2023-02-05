@@ -25,11 +25,11 @@ def get_translation(word):
         request = requests.get(DEFAULT_PAGE + word, headers=headers, timeout=0.5)
     except Exception as error:
         print(f'Ha-ha-ha, you caught the error in project "Translator_RU_EN_RU_Bot", in file "parser", in func "get_translation", in request:\n\t{error}')
-        with open('/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/bot_state', 'a') as bot_state:
+        with open('./bot_state', 'a') as bot_state:
             now_time = localtime()
 
             bot_state.write(error)
-            bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
+            bot_state.write(f' {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
             bot_state.write('\n')
 
         return error_problems_with_server
@@ -68,9 +68,9 @@ def get_translation(word):
         except AttributeError:
             return error_not_exist_word
 
-if __name__ == '__main__':
-    word = input('Enter a word: ')
-    word = word.lower()
-
-    tr = get_translation(word)
-    print(tr)
+# if __name__ == '__main__':
+#     word = input('Enter a word: ')
+#     word = word.lower()
+#
+#     tr = get_translation(word)
+#     print(tr)

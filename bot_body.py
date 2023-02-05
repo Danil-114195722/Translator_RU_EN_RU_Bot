@@ -54,18 +54,18 @@ async def main_command(message: types.Message):
         await message.reply(translation)
 
     except Exception as error:
-        with open('/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/bot_state', 'a') as bot_state:
+        with open('./bot_state', 'a') as bot_state:
             now_time = localtime()
 
             bot_state.write(error)
-            bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
+            bot_state.write(f' {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
             bot_state.write('\n')
 
 if __name__ == '__main__':
-    with open('/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/bot_state', 'w') as bot_state:
+    with open('./bot_state', 'w') as bot_state:
         now_time = localtime()
 
         bot_state.write('Start in')
-        bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
+        bot_state.write(f' {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
 
     executor.start_polling(disp)
