@@ -79,6 +79,6 @@ if __name__ == '__main__':
         # bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
         # для сервака
         bot_state.write(f'Time: {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
-	bot_state.write(f'Date: {now_time.tm_mday}.{now_time.tm_mon}.{now_time.tm_year}\n')
+        bot_state.write(f'Date: {now_time.tm_mday}.{now_time.tm_mon}.{now_time.tm_year}\n')
 
     executor.start_polling(disp)
