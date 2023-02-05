@@ -54,18 +54,30 @@ async def main_command(message: types.Message):
         await message.reply(translation)
 
     except Exception as error:
+        # для локалки
+        # with open('/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/bot_state', 'a') as bot_state:
+        # для сервака
         with open('./bot_state', 'a') as bot_state:
             now_time = localtime()
 
             bot_state.write(error)
+            # для локалки
+            # bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
+            # для сервака
             bot_state.write(f' {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
             bot_state.write('\n')
 
 if __name__ == '__main__':
+    # для локалки
+    # with open('/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/bot_state', 'a') as bot_state:
+    # для сервака
     with open('./bot_state', 'w') as bot_state:
         now_time = localtime()
 
         bot_state.write('Start in')
+        # для локалки
+        # bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
+        # для сервака
         bot_state.write(f' {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
 
     executor.start_polling(disp)

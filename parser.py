@@ -25,10 +25,16 @@ def get_translation(word):
         request = requests.get(DEFAULT_PAGE + word, headers=headers, timeout=0.5)
     except Exception as error:
         print(f'Ha-ha-ha, you caught the error in project "Translator_RU_EN_RU_Bot", in file "parser", in func "get_translation", in request:\n\t{error}')
+        # для локалки
+        # with open('/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/bot_state', 'a') as bot_state:
+        # для сервака
         with open('./bot_state', 'a') as bot_state:
             now_time = localtime()
 
             bot_state.write(error)
+            # для локалки
+            # bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
+            # для сервака
             bot_state.write(f' {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
             bot_state.write('\n')
 
@@ -45,7 +51,7 @@ def get_translation(word):
     # переводим с русского
     if re.match(r'[а-я]', word):
         try:
-            translation_ru = soup.find('p', {'class': 't_inline'}).get_text()
+            translation_ru = soup.find('p', {'class': 't_inline'}).get_text().strip()
             # добавляем перевод в бд
             add_word_translation(word, translation_ru, None, RU)
 
@@ -57,7 +63,7 @@ def get_translation(word):
     # переводим с английского
     else:
         try:
-            translation_en = soup.find('div', {'class': 't_inline_en'}).get_text()
+            translation_en = soup.find('div', {'class': 't_inline_en'}).get_text().strip()
             transcription_en = soup.find('div', {'id': 'uk_tr_sound'}).find('span', {'class': 'transcription'}).get_text().strip()
 
             # добавляем перевод и транскрипцию в бд

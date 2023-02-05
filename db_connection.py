@@ -5,10 +5,6 @@ from time import localtime
 from constants import *
 
 
-DATABASE = './sqlite.db'
-CONNECTION = sqlite3.connect(DATABASE)
-
-
 # выполнить SQL-команду "query"
 def execute_query(con: Connection, query):
     cur = con.cursor()
@@ -27,10 +23,16 @@ def execute_query(con: Connection, query):
 
     except Error as error:
         print(f'Ha-ha-ha, you caught the error in project "Translator_RU_EN_RU_Bot", in file "db_connection", in func "execute_query": {error}')
+        # для локалки
+        # with open('/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/bot_state', 'a') as bot_state:
+        # для сервака
         with open('./bot_state', 'a') as bot_state:
             now_time = localtime()
 
             bot_state.write(error)
+            # для локалки
+            # bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
+            # для сервака
             bot_state.write(f' {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
             bot_state.write('\n')
 
