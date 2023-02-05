@@ -45,7 +45,7 @@ async def main_command(message: types.Message):
             if re.match(r'[а-я]', word):
                 translation = select_word_translation(word, from_language)[1]
             else:
-                translation = ' '.join(list(select_word_translation(word, from_language)[1:]).reverse())
+                translation = ' '.join(list(select_word_translation(word, from_language)[-1::-1]))
 
             # print(translation)
         except TypeError:
