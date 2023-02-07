@@ -69,7 +69,7 @@ async def main_command(message: types.Message):
         with open('./bot_state', 'a') as bot_state:
             now_time = localtime()
 
-            bot_state.write(error)
+            bot_state.write(str(error))
             # для локалки
             # bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
             # для сервака
