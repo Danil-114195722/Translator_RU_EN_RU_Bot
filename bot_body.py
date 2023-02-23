@@ -8,10 +8,13 @@ from aiogram import Bot, types
 from aiogram.utils import executor
 from aiogram.dispatcher import Dispatcher
 
+import asyncio
+import aiofiles
+
 from config import TOKEN
 from db_connection import select_word_translation
 from parser import get_translation
-from constants import *
+from constants import RU, EN, PROJECT_PATH, TIME_ZONE, DATABASE
 
 
 bot = Bot(token=TOKEN)
@@ -19,13 +22,13 @@ disp = Dispatcher(bot)
 
 
 @disp.message_handler(commands='start')
-async def start_command(message: types.Message):
+async def start_command(message: types.Message) -> None:
     await message.answer(
         f'Привет!\nВведи слово:\n(для справки введи /help)')
 
 
 @disp.message_handler(commands='help')
-async def help_command(message: types.Message):
+async def help_command(message: types.Message) -> None:
     await message.answer(f'''
     Я использую онлайн словарь wordhunt.ru,\nи перевожу введённое русское слово на английский, а введённое английское слово на русский.
 \nДля наиболее корректного результата вводите слово в начальной форме вне зависимости от языка (если это возможно).
@@ -41,7 +44,7 @@ async def help_command(message: types.Message):
 
 
 @disp.message_handler()
-async def main_command(message: types.Message):
+async def main_command(message: types.Message) -> None:
     word = message.text.lower().strip()
 
     try:
@@ -51,43 +54,38 @@ async def main_command(message: types.Message):
             from_language = EN
 
         try:
+            # выбираем запись с переводом из БД
+            get_db_note = await asyncio.create_task(
+                select_word_translation(database=DATABASE, word=word, from_language=from_language)
+            )
+            # если запись не была найдена
+            if not get_db_note:
+                raise TypeError
+            # преобразуем выбранную запись в формат для вывода пользователю
             if re.match(r'[а-я]', word):
-                translation = select_word_translation(word, from_language)[1]
+                translation = get_db_note[1]
             else:
-                translation = ' '.join(list(select_word_translation(word, from_language)[-1::-1]))
+                translation = ' '.join(list(get_db_note[-1::-1]))
 
-            # print(translation)
+        # если запись с переводом не найдена в БД
         except TypeError:
-            translation = get_translation(word)
+            translation = await asyncio.create_task(get_translation(word))
 
         await message.reply(translation)
 
     except Exception as error:
-        # для локалки
-        # with open('/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/bot_state', 'a') as bot_state:
-        # для сервака
-        with open('./bot_state', 'a') as bot_state:
+        async with aiofiles.open(f'{PROJECT_PATH}/bot_state.txt', 'a') as bot_state:
             now_time = localtime()
 
-            bot_state.write(str(error))
-            # для локалки
-            # bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
-            # для сервака
-            bot_state.write(f' {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
-            bot_state.write('\n')
+            await bot_state.write(str(error))
+            await bot_state.write(f' {now_time.tm_hour + TIME_ZONE}.{now_time.tm_min}.{now_time.tm_sec}\n\n')
 
 if __name__ == '__main__':
-    # для локалки
-    # with open('/home/daniil/Documents/Python/Telegram_bots/Translator_RU_EN_RU_Bot/bot_state', 'a') as bot_state:
-    # для сервака
-    with open('./bot_state', 'w') as bot_state:
+    with open(f'{PROJECT_PATH}/bot_state.txt', 'w') as bot_state:
         now_time = localtime()
 
-        bot_state.write('Start in\n')
-        # для локалки
-        # bot_state.write(f' {now_time.tm_hour}.{now_time.tm_min}.{now_time.tm_sec}\n')
-        # для сервака
-        bot_state.write(f'Time: {now_time.tm_hour + 3}.{now_time.tm_min}.{now_time.tm_sec}\n')
-        bot_state.write(f'Date: {now_time.tm_mday}.{now_time.tm_mon}.{now_time.tm_year}\n')
+        bot_state.write('Start at\n')
+        bot_state.write(f'Time: {now_time.tm_hour + TIME_ZONE}.{now_time.tm_min}.{now_time.tm_sec}\n')
+        bot_state.write(f'Date: {now_time.tm_mday}.{now_time.tm_mon}.{now_time.tm_year}\n\n')
 
     executor.start_polling(disp)

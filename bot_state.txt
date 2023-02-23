@@ -1,0 +1,12 @@
+Start at
+Time: 17.56.38
+Date: 23.2.2023
+
+Not found "reg" in table "english" (time is 17.56.44)
+
+Word "reg" have been added into table "english" (time is 17.56.44)
+
+Not found "rag" in table "english" (time is 17.56.48)
+
+Word "rag" have been added into table "english" (time is 17.56.48)
+
