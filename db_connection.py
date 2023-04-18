@@ -64,7 +64,7 @@ async def select_word_translation(database:str, word: str, from_language: str) -
                 return select_word
 
     except DoesNotExistWord:
-        print("This word haven't been found")
+        # print("This word haven't been found")
 
         async with aiofiles.open(f'{PROJECT_PATH}/bot_state.txt', 'a') as bot_state:
             now_time = localtime()

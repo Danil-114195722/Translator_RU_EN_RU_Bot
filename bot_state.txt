@@ -1,12 +1,24 @@
 Start at
-Time: 17.56.38
-Date: 23.2.2023
+Time: 18.10.7
+Date: 12.4.2023
 
-Not found "reg" in table "english" (time is 17.56.44)
+Not found "у мужлан нет прв" in table "russian" (time is 18.10.7)
 
-Word "reg" have been added into table "english" (time is 17.56.44)
+Not found "норма" in table "russian" (time is 18.10.13)
 
-Not found "rag" in table "english" (time is 17.56.48)
+Word "норма" have been added into table "russian" (time is 18.10.14)
 
-Word "rag" have been added into table "english" (time is 17.56.48)
+Not found "mode" in table "english" (time is 18.10.19)
+
+Word "mode" have been added into table "english" (time is 18.10.19)
+
+Not found "stream" in table "english" (time is 22.25.9)
+
+Word "stream" have been added into table "english" (time is 22.25.9)
+
+Not found "пар" in table "russian" (time is 22.25.15)
+
+Word "пар" have been added into table "russian" (time is 22.25.15)
+
+Not found "phwoar" in table "english" (time is 0.52.9)
 
